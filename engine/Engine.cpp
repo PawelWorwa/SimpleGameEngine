@@ -1,11 +1,7 @@
 #include "Engine.hpp"
-#include "../states/DummyState.hpp"
-#include <iostream>
 
 void Engine::gameLoop() {
     while ( window.isOpen() && game.isRunning()) {
-        std::cout << "states: " << gameStates.size() << '\n';
-
         if ( gameStates.top()->isAddState()) {
             gameStates.top()->setAddState( false );
             addState( gameStates.top()->getNextState());
@@ -14,7 +10,7 @@ void Engine::gameLoop() {
             replaceState( gameStates.top()->getNextState());
 
         } else if ( gameStates.top()->isCloseState()) {
-            gameStates.pop();
+            popState();
         }
 
         gameStates.top()->handleInput( window );
@@ -32,6 +28,12 @@ void Engine::addState( std::unique_ptr< GameState > gameState ) {
 }
 
 void Engine::replaceState( std::unique_ptr< GameState > gameState ) {
-    gameStates.pop();
+    popState();
     addState( std::move( gameState ));
+}
+
+void Engine::popState() {
+    if ( !gameStates.empty()) {
+        gameStates.pop();
+    }
 }

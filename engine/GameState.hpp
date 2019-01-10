@@ -33,9 +33,11 @@ class GameState {
 
     protected:
         std::unique_ptr< GameState > nextGameState = nullptr;
+
         bool replaceState = false;
         bool addState = false;
         bool closeState = false;
+        bool statePaused = false;
 };
 
 #endif //SIMPLEGAMEENGINE_GAMESTATE_HPP

@@ -19,8 +19,9 @@ class Engine {
         void gameLoop();
 
         sf::RenderWindow &getWindow();
-        void addState( std::unique_ptr<GameState> gameState );
-        void replaceState( std::unique_ptr<GameState> gameState );
+        void addState( std::unique_ptr< GameState > gameState );
+        void popState();
+        void replaceState( std::unique_ptr< GameState > gameState );
 };
 
 #endif //SIMPLEGAMEENGINE_ENGINE_HPP

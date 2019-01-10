@@ -4,7 +4,7 @@ project(SimpleGameEngine)
 set(CMAKE_CXX_STANDARD 11)
 
 add_executable(SimpleGameEngine
-        main.cpp engine/Engine.cpp engine/Engine.hpp engine/Game.cpp engine/Game.hpp engine/GameState.hpp states/DummyState.cpp states/DummyState.hpp)
+        main.cpp engine/Engine.cpp engine/Engine.hpp engine/Game.cpp engine/Game.hpp engine/GameState.hpp states/DummyState.cpp states/DummyState.hpp engine/ResourceManager.hpp states/Assets.hpp engine/Animation.cpp engine/Animation.hpp engine/Random.hpp engine/Random.cpp engine/Random.hpp engine/Resolution.hpp engine/Resolution.cpp states/Assets.cpp)
 
 # ToDO - pass as parameter
 set(SFML_DIR "C:/01_SFML/SFML/lib/cmake/SFML")
