@@ -1,1 +1,2 @@
-To be updated in near future :-)
+Simple state engine
+Readme to be updated in near future :-)
