@@ -35,7 +35,7 @@ void Engine::gameLoop() {
                 break;
         }
 
-        gameStates.top()->handleInput( window );
+        gameStates.top()->handleInput( game, window );
         gameStates.top()->update( game );
         gameStates.top()->draw( window );
     }

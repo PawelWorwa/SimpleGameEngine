@@ -1,5 +1,3 @@
-#include <utility>
-
 #include "DummyState.hpp"
 
 DummyState::DummyState() {
@@ -9,31 +7,39 @@ DummyState::DummyState() {
     prepareAnimatedObjects( Assets::Textures::blinkingStar, 15 );
 }
 
-void DummyState::handleInput( sf::RenderWindow &window ) {
+void DummyState::handleInput( Game &game, sf::RenderWindow &window ) {
     sf::Event event;
     while ( window.pollEvent( event )) {
         if ( event.type == sf::Event::Closed ) {
             window.close();
 
         } else if ( event.type == sf::Event::KeyPressed ) {
-            if ( event.key.code == sf::Keyboard::Q ) {
-                stateOperation = StateOperation::REPLACE_STATE;
-                nextStateName = StateName::DUMMY_STATE;
+            if ( event.key.code == sf::Keyboard::P ) {
+                game.setPaused( !game.isPaused());
+            }
 
-            } else if ( event.key.code == sf::Keyboard::W ) {
-                stateOperation = StateOperation::ADD_STATE;
-                nextStateName = StateName::DUMMY_STATE;
+            if ( !game.isPaused()) {
+                if ( event.key.code == sf::Keyboard::Q ) {
+                    stateOperation = StateOperation::REPLACE_STATE;
+                    nextStateName = StateName::DUMMY_STATE;
 
-            } else if ( event.key.code == sf::Keyboard::E ) {
-                stateOperation = StateOperation::CLOSE_STATE;
+                } else if ( event.key.code == sf::Keyboard::W ) {
+                    stateOperation = StateOperation::ADD_STATE;
+                    nextStateName = StateName::DUMMY_STATE;
+
+                } else if ( event.key.code == sf::Keyboard::E ) {
+                    stateOperation = StateOperation::CLOSE_STATE;
+                }
             }
         }
     }
 }
 
 void DummyState::update( Game &game ) {
-    for ( auto &animation : animations ) {
-        animation.increaseFrame();
+    if ( !game.isPaused()) {
+        for ( auto &animation : animations ) {
+            animation.increaseFrame();
+        }
     }
 }
 

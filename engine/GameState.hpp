@@ -13,7 +13,7 @@ class GameState {
 
         virtual ~GameState() {};
 
-        virtual void handleInput( sf::RenderWindow &window ) = 0;
+        virtual void handleInput( Game &game, sf::RenderWindow &window ) = 0;
         virtual void update( Game &game ) = 0;
         virtual void draw( sf::RenderWindow &window ) = 0;
 

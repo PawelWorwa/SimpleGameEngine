@@ -24,7 +24,7 @@ class DummyState : public GameState {
     public :
         DummyState();
 
-        void handleInput( sf::RenderWindow &window ) override;
+        void handleInput( Game &game, sf::RenderWindow &window ) override;
         void update( Game &game ) override;
         void draw( sf::RenderWindow &window ) override;
 };
