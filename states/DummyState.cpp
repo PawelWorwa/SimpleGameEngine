@@ -1,26 +1,12 @@
+#include <utility>
+
 #include "DummyState.hpp"
 
 DummyState::DummyState() {
     prepareTexture( Assets::Textures::star );
     prepareTexture( Assets::Textures::blinkingStar );
-
-    Random random;
-    for ( std::size_t i = 0; i < random.randomInteger( 1, 100 ); ++i ) {
-        Animation star( textures.get( Assets::Textures::star ), 1 );
-        star.setPosition( sf::Vector2f( random.randomFloat( 0.f, Resolution::normal.width ),
-                                        random.randomFloat( 0.f, Resolution::normal.height )));
-        star.randomizeStaringFrame();
-        animations.push_back( star );
-    }
-
-    for ( std::size_t i = 0; i < random.randomInteger( 1, 100 ); ++i ) {
-        Animation blinkingStar( textures.get( Assets::Textures::blinkingStar ), 15 );
-        blinkingStar.setPosition(
-                sf::Vector2f( random.randomFloat( 0.f, Resolution::normal.width ),
-                              random.randomFloat( 0.f, Resolution::normal.height )));
-        blinkingStar.randomizeStaringFrame();
-        animations.push_back( blinkingStar );
-    }
+    prepareAnimatedObjects( Assets::Textures::star, 1 );
+    prepareAnimatedObjects( Assets::Textures::blinkingStar, 15 );
 }
 
 void DummyState::handleInput( sf::RenderWindow &window ) {
@@ -31,28 +17,23 @@ void DummyState::handleInput( sf::RenderWindow &window ) {
 
         } else if ( event.type == sf::Event::KeyPressed ) {
             if ( event.key.code == sf::Keyboard::Q ) {
-                replaceState = true;
-                nextGameState = std::unique_ptr< GameState >( new DummyState());
+                stateOperation = StateOperation::REPLACE_STATE;
+                nextStateName = StateName::DUMMY_STATE;
 
             } else if ( event.key.code == sf::Keyboard::W ) {
-                addState = true;
-                nextGameState = std::unique_ptr< GameState >( new DummyState());
+                stateOperation = StateOperation::ADD_STATE;
+                nextStateName = StateName::DUMMY_STATE;
 
             } else if ( event.key.code == sf::Keyboard::E ) {
-                closeState = true;
-
-            } else if ( event.key.code == sf::Keyboard::P ) {
-                statePaused = !statePaused;
+                stateOperation = StateOperation::CLOSE_STATE;
             }
         }
     }
 }
 
 void DummyState::update( Game &game ) {
-    if ( !statePaused ) {
-        for ( auto &animation : animations ) {
-            animation.increaseFrame();
-        }
+    for ( auto &animation : animations ) {
+        animation.increaseFrame();
     }
 }
 
@@ -62,7 +43,7 @@ void DummyState::draw( sf::RenderWindow &window ) {
     dynamicView.reset( sf::FloatRect( 0.f, 0.f, window.getSize().x, window.getSize().y ));
     window.setView( dynamicView );
     for ( auto &animation : animations ) {
-        animation.draw( window );
+        window.draw( animation );
     }
 
     window.display();
@@ -71,10 +52,25 @@ void DummyState::draw( sf::RenderWindow &window ) {
 void DummyState::prepareTexture( const std::string &texturePath ) {
     sf::Image image;
     image.loadFromFile( texturePath );
-    image.createMaskFromColor( sf::Color( 0, 255, 128 ));
+    sf::Color maskGreen = sf::Color( 0, 255, 128 );
+    image.createMaskFromColor( maskGreen );
 
     sf::Texture texture;
     texture.loadFromImage( image );
 
     textures.add( texturePath, texture );
+}
+
+void DummyState::prepareAnimatedObjects( const std::string &asset, unsigned int frames ) {
+    thread_local std::mt19937 generator{std::random_device{}()};
+    unsigned int elements = std::uniform_int_distribution< unsigned int >{0, 100}( generator );
+
+    for ( std::size_t i = 0; i < elements; ++i ) {
+        Animation animation( textures.get( asset ), frames );
+        unsigned int xPos = std::uniform_int_distribution< unsigned int >{0, 1024}( generator );
+        unsigned int yPos = std::uniform_int_distribution< unsigned int >{0, 768}( generator );
+        animation.setPosition( sf::Vector2f( xPos, yPos ));
+        animation.randomizeStaringFrame();
+        animations.push_back( animation );
+    }
 }

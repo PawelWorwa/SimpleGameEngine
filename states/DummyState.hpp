@@ -1,26 +1,25 @@
 #ifndef SIMPLEGAMEENGINE_DUMMYSTATE_HPP
 #define SIMPLEGAMEENGINE_DUMMYSTATE_HPP
 
+#include <string>
+
 #include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Text.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include "Assets.hpp"
 #include "../engine/Animation.hpp"
 #include "../engine/GameState.hpp"
-#include "../engine/Random.hpp"
-#include "../engine/Resolution.hpp"
-#include "../engine/ResourceManager.hpp"
-
-#include <string>
+#include "../engine/Resource.hpp"
 
 class DummyState : public GameState {
     private :
-        ResourceManager< sf::Texture > textures;
         std::vector< Animation > animations;
+        Resource< sf::Texture > textures;
         sf::View dynamicView;
 
         void prepareTexture( const std::string &texturePath );
+        void prepareAnimatedObjects(const std::string &asset, unsigned int frames);
 
     public :
         DummyState();

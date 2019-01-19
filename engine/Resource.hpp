@@ -5,7 +5,7 @@
 #include <unordered_map>
 
 template< class T >
-class ResourceManager {
+class Resource {
     public :
         void add( const std::string key, const T value ) {
             resources.insert( std::make_pair( key, value ));
