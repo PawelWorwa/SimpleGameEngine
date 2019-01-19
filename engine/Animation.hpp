@@ -1,11 +1,11 @@
 #ifndef SIMPLEGAMEENGINE_ANIMATION_HPP
 #define SIMPLEGAMEENGINE_ANIMATION_HPP
 
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
-class Animation {
+class Animation : public sf::Drawable {
     private :
         const unsigned int frames;
         const sf::Texture &texture;
@@ -14,14 +14,14 @@ class Animation {
         unsigned int width = 0;
         unsigned int height = 0;
 
-        sf::Sprite sprite;
+        sf::Vector2f position;
 
     public:
         explicit Animation( const sf::Texture &texture, unsigned int maxFrames );
 
-        void draw( sf::RenderWindow &window );
-        void setPosition( sf::Vector2f position );
+        void draw( sf::RenderTarget &target, sf::RenderStates states ) const override;
         void increaseFrame();
+        void setPosition( sf::Vector2f position );
         void randomizeStaringFrame();
 };
 
