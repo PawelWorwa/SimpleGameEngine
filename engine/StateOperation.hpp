@@ -2,7 +2,7 @@
 #define SIMPLEGAMEENGINE_STATEOPERATION_HPP
 
 enum class StateOperation {
-        RUNNING,
+        RUN_STATE,
         ADD_STATE,
         REPLACE_STATE,
         CLOSE_STATE

@@ -8,9 +8,9 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include "Assets.hpp"
-#include "../engine/Animation.hpp"
+#include "Animation.hpp"
 #include "../engine/GameState.hpp"
-#include "../engine/Resource.hpp"
+#include "Resource.hpp"
 
 class DummyState : public GameState {
     private :

@@ -9,7 +9,7 @@
 
 class GameState {
     public:
-        GameState() : stateOperation( StateOperation::RUNNING ), nextStateName( StateName::NONE ) {}
+        GameState() : stateOperation( StateOperation::RUN_STATE ), nextStateName( StateName::CURRENT ) {}
 
         virtual ~GameState() {};
 

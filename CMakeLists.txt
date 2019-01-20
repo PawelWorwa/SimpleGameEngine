@@ -10,11 +10,11 @@ add_executable(SimpleGameEngine
         engine/Game.cpp
         engine/Game.hpp
         engine/GameState.hpp
-        engine/Animation.cpp
-        engine/Animation.hpp
-        engine/Resource.hpp
         engine/StateOperation.hpp
         engine/StateName.hpp
+        states/Animation.cpp
+        states/Animation.hpp
+        states/Resource.hpp
         states/DummyState.cpp
         states/DummyState.hpp
         states/Assets.hpp

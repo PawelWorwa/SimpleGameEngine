@@ -2,7 +2,7 @@
 #define SIMPLEGAMEENGINE_STATETYPE_HPP
 
 enum class StateName {
-        NONE,
+        CURRENT,
         DUMMY_STATE
 };
 
