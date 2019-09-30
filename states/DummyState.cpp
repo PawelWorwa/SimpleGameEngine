@@ -1,82 +1,80 @@
 #include "DummyState.hpp"
 
 DummyState::DummyState() {
-    prepareTexture( Assets::Textures::star );
-    prepareTexture( Assets::Textures::blinkingStar );
-    prepareAnimatedObjects( Assets::Textures::star, 1 );
-    prepareAnimatedObjects( Assets::Textures::blinkingStar, 15 );
+    srand(time(NULL));
+
+    font.loadFromFile("../font.ttf");
+
+    color = sf::Color(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
+    clock.restart();
 }
 
-void DummyState::handleInput( Game &game, sf::RenderWindow &window ) {
+void DummyState::handleInput(Game &game, sf::RenderWindow &window) {
     sf::Event event;
-    while ( window.pollEvent( event )) {
-        if ( event.type == sf::Event::Closed ) {
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
             window.close();
 
-        } else if ( event.type == sf::Event::KeyPressed ) {
-            if ( event.key.code == sf::Keyboard::P ) {
-                game.setPaused( !game.isPaused());
+        } else if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::P) {
+                game.setPaused(!game.isPaused());
             }
 
-            if ( !game.isPaused()) {
-                if ( event.key.code == sf::Keyboard::Q ) {
-                    stateOperation = StateOperation::REPLACE_STATE;
-                    nextStateName = StateName::DUMMY_STATE;
+            if (!game.isPaused()) {
+                if (event.key.code == sf::Keyboard::Q) {
+                    stateOperation = StateOperation::REPLACE_EXISTING;
+                    nextState = State::INITIAL;
 
-                } else if ( event.key.code == sf::Keyboard::W ) {
-                    stateOperation = StateOperation::ADD_STATE;
-                    nextStateName = StateName::DUMMY_STATE;
+                } else if (event.key.code == sf::Keyboard::W) {
+                    stateOperation = StateOperation::ADD_NEW;
+                    nextState = State::INITIAL;
 
-                } else if ( event.key.code == sf::Keyboard::E ) {
-                    stateOperation = StateOperation::CLOSE_STATE;
+                } else if (event.key.code == sf::Keyboard::E) {
+                    stateOperation = StateOperation::CLOSE;
                 }
             }
         }
     }
 }
 
-void DummyState::update( Game &game ) {
-    if ( !game.isPaused()) {
-        for ( auto &animation : animations ) {
-            animation.increaseFrame();
+void DummyState::update(Game &game) {
+    if (!game.isPaused()) {
+        if (clock.getElapsedTime().asSeconds() > 1) {
+            seconds++;
+            clock.restart();
         }
     }
 }
 
-void DummyState::draw( sf::RenderWindow &window ) {
-    window.clear( sf::Color::Black );
+void DummyState::draw(sf::RenderWindow &window) {
+    window.clear(color);
 
-    dynamicView.reset( sf::FloatRect( 0.f, 0.f, window.getSize().x, window.getSize().y ));
-    window.setView( dynamicView );
-    for ( auto &animation : animations ) {
-        window.draw( animation );
-    }
+    float offset = 28.f;
+    sf::Text pauseText = createText("Press P for pause");
+    sf::Text replaceText = createText("Press Q to replace existing state");
+    replaceText.setPosition(0.f, offset);
+    sf::Text addNewText = createText("Press W to add new state");
+    addNewText.setPosition(0.f, 2 * offset);
+    sf::Text closeText = createText("Press E to close current state");
+    closeText.setPosition(0.f, 3 * offset);
+    sf::Text infoText = createText("State is running for seconds: " + std::to_string(seconds));
+    infoText.setPosition(0.f, 4 * offset);
+
+    window.draw(pauseText);
+    window.draw(replaceText);
+    window.draw(addNewText);
+    window.draw(closeText);
+    window.draw(infoText);
 
     window.display();
 }
 
-void DummyState::prepareTexture( const std::string &texturePath ) {
-    sf::Image image;
-    image.loadFromFile( texturePath );
-    sf::Color maskGreen = sf::Color( 0, 255, 128 );
-    image.createMaskFromColor( maskGreen );
+sf::Text DummyState::createText(std::string textMessage) {
+    sf::Text text;
+    text.setFont(font);
+    text.setString(textMessage);
+    text.setCharacterSize(24);
+    text.setFillColor(sf::Color::White);
 
-    sf::Texture texture;
-    texture.loadFromImage( image );
-
-    textures.add( texturePath, texture );
-}
-
-void DummyState::prepareAnimatedObjects( const std::string &asset, unsigned int frames ) {
-    thread_local std::mt19937 generator{std::random_device{}()};
-    unsigned int elements = std::uniform_int_distribution< unsigned int >{0, 100}( generator );
-
-    for ( std::size_t i = 0; i < elements; ++i ) {
-        Animation animation( textures.get( asset ), frames );
-        unsigned int xPos = std::uniform_int_distribution< unsigned int >{0, 1024}( generator );
-        unsigned int yPos = std::uniform_int_distribution< unsigned int >{0, 768}( generator );
-        animation.setPosition( sf::Vector2f( xPos, yPos ));
-        animation.randomizeStaringFrame();
-        animations.push_back( animation );
-    }
+    return text;
 }

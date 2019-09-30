@@ -5,33 +5,36 @@
 
 #include "Game.hpp"
 #include "StateOperation.hpp"
-#include "StateName.hpp"
+#include "State.hpp"
 
 class GameState {
     public:
-        GameState() : stateOperation( StateOperation::RUN_STATE ), nextStateName( StateName::CURRENT ) {}
+        GameState() :
+                stateOperation(StateOperation::RUNNING),
+                nextState(State::NONE) {
+        }
 
-        virtual ~GameState() {};
+        virtual ~GameState() = default;
 
-        virtual void handleInput( Game &game, sf::RenderWindow &window ) = 0;
-        virtual void update( Game &game ) = 0;
-        virtual void draw( sf::RenderWindow &window ) = 0;
+        virtual void handleInput(Game &game, sf::RenderWindow &window) = 0;
+        virtual void update(Game &game) = 0;
+        virtual void draw(sf::RenderWindow &window) = 0;
 
         StateOperation getStateOperation() const {
             return stateOperation;
         }
 
-        StateName getNextStateName() const {
-            return nextStateName;
+        State getNextState() const {
+            return std::move(nextState);
         }
 
-        void setStateOperation( StateOperation stateOperation ) {
+        void setStateOperation(StateOperation stateOperation) {
             GameState::stateOperation = stateOperation;
         }
 
     protected:
         StateOperation stateOperation;
-        StateName nextStateName;
+        State nextState;
 };
 
 #endif //SIMPLEGAMEENGINE_GAMESTATE_HPP

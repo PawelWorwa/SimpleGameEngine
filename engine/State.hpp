@@ -1,0 +1,9 @@
+#ifndef SIMPLEGAMEENGINE_STATE_HPP
+#define SIMPLEGAMEENGINE_STATE_HPP
+
+enum class State {
+        NONE,
+        INITIAL
+};
+
+#endif //SIMPLEGAMEENGINE_STATE_HPP

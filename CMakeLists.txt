@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.9)
 project(SimpleGameEngine)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -11,15 +11,10 @@ add_executable(SimpleGameEngine
         engine/Game.hpp
         engine/GameState.hpp
         engine/StateOperation.hpp
-        engine/StateName.hpp
-        states/Animation.cpp
-        states/Animation.hpp
-        states/Resource.hpp
+        engine/State.hpp
         states/DummyState.cpp
         states/DummyState.hpp
-        states/Assets.hpp
-        states/Assets.cpp
-        )
+        engine/StateFactory.cpp engine/StateFactory.hpp)
 
 
 set(SFML_DIR "${SFML_PATH}")

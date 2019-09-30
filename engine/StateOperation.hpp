@@ -2,10 +2,10 @@
 #define SIMPLEGAMEENGINE_STATEOPERATION_HPP
 
 enum class StateOperation {
-        RUN_STATE,
-        ADD_STATE,
-        REPLACE_STATE,
-        CLOSE_STATE
+        RUNNING,
+        ADD_NEW,
+        REPLACE_EXISTING,
+        CLOSE
 };
 
 #endif //SIMPLEGAMEENGINE_STATEOPERATION_HPP

@@ -1,64 +1,72 @@
 #include "Engine.hpp"
 
 Engine::Engine() {
-    window.create( sf::VideoMode( 1024, 768 ), "Simple state engine!" );
-    window.setFramerateLimit( 30 );
-    addState( createState( StateName::DUMMY_STATE ));
+    window.create(
+            sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
+            "Simple state engine!");
+    window.setFramerateLimit(FPS);
 }
 
 void Engine::gameLoop() {
-    while ( window.isOpen() && game.isRunning()) {
-        StateOperation operation = gameStates.top()->getStateOperation();
-        if ( operation == StateOperation::ADD_STATE ) {
-            StateName nextState = gameStates.top()->getNextStateName();
-            addState( createState( nextState ));
-            std::cout << "states: " << gameStates.size() << " adding" << std::endl;
+    while (window.isOpen() && game.isRunning()) {
+        StateOperation operation = states.top()->getStateOperation();
+        handleOperation(operation);
 
-        } else if ( operation == StateOperation::REPLACE_STATE ) {
-            StateName nextState = gameStates.top()->getNextStateName();
-            replaceState( createState( nextState ));
-            std::cout << "states: " << gameStates.size() << " replacing" << std::endl;
-
-        } else if ( operation == StateOperation::CLOSE_STATE ) {
-            if ( gameStates.size() > 1 ) {
-                popState();
-                std::cout << "states: " << gameStates.size() << " popping" << std::endl;
-
-            } else {
-                std::cout << "can't pop last state!" << std::endl;
-            }
-            gameStates.top()->setStateOperation( StateOperation::RUN_STATE );
-        }
-
-        gameStates.top()->handleInput( game, window );
-        gameStates.top()->update( game );
-        gameStates.top()->draw( window );
+        states.top()->handleInput(game, window);
+        states.top()->update(game);
+        states.top()->draw(window);
     }
 
     window.close();
 }
 
-void Engine::addState( std::unique_ptr< GameState > gameState ) {
-    gameStates.push( std::move( gameState ));
+void Engine::addState(std::unique_ptr< GameState > gameState) {
+    states.push(
+            std::move(gameState));
+
+    std::cout << "states: " << states.size() << " adding" << std::endl;
 }
 
-void Engine::replaceState( std::unique_ptr< GameState > gameState ) {
-    popState();
-    addState( std::move( gameState ));
+void Engine::replaceState(std::unique_ptr< GameState > gameState) {
+    states.pop();
+    addState(
+            std::move(gameState));
+
+    std::cout << "states: " << states.size() << " replacing" << std::endl;
 }
 
-void Engine::popState() {
-    if ( !gameStates.empty()) {
-        gameStates.pop();
-    }
+void Engine::initialState(State state) {
+    addState(
+            stateFactory.createState(state));
 }
 
-std::unique_ptr< GameState > Engine::createState( StateName state ) {
-    switch ( state ) {
-        case StateName::DUMMY_STATE :
-            return std::unique_ptr< GameState >( new DummyState());
+void Engine::handleOperation(StateOperation operation) {
+    State nextState = states.top()->getNextState();
+    switch (operation) {
+        case StateOperation::ADD_NEW:
+            addState(
+                    stateFactory.createState(nextState));
+            break;
+
+        case StateOperation::REPLACE_EXISTING:
+            replaceState(
+                    stateFactory.createState(nextState));
+            break;
+
+        case StateOperation::CLOSE:
+            closeState();
+            break;
 
         default:
             break;
     }
+}
+
+void Engine::closeState() {
+    if (states.size() > 1) {
+        states.pop();
+        std::cout << "states: " << states.size() << " popping" << std::endl;
+    }
+
+    states.top()->setStateOperation(StateOperation::RUNNING);
 }

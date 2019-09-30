@@ -1,6 +1,8 @@
 #include "Game.hpp"
 
-Game::Game() : running( true ), paused( false ) {
+Game::Game() :
+        running(true),
+        paused(false) {
 }
 
 bool Game::isRunning() const {
@@ -11,10 +13,10 @@ bool Game::isPaused() const {
     return paused;
 }
 
-void Game::setRunning( bool running ) {
+void Game::setRunning(bool running) {
     Game::running = running;
 }
 
-void Game::setPaused( bool paused ) {
+void Game::setPaused(bool paused) {
     Game::paused = paused;
 }

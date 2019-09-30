@@ -2,17 +2,17 @@
 #define SIMPLEGAMEENGINE_GAME_HPP
 
 class Game {
-    private:
-        bool running;
-        bool paused;
-
     public:
         Game();
 
         bool isPaused() const;
         bool isRunning() const;
-        void setRunning( bool running );
-        void setPaused( bool paused );
+        void setRunning(bool running);
+        void setPaused(bool paused);
+
+    private:
+        bool running;
+        bool paused;
 };
 
 #endif //SIMPLEGAMEENGINE_GAME_HPP

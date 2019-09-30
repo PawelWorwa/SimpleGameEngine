@@ -7,26 +7,23 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include "Assets.hpp"
-#include "Animation.hpp"
 #include "../engine/GameState.hpp"
-#include "Resource.hpp"
 
 class DummyState : public GameState {
     private :
-        std::vector< Animation > animations;
-        Resource< sf::Texture > textures;
-        sf::View dynamicView;
+        sf::Color color;
+        sf::Clock clock;
+        sf::Font font;
+        unsigned int seconds = 0;
 
-        void prepareTexture( const std::string &texturePath );
-        void prepareAnimatedObjects(const std::string &asset, unsigned int frames);
+        sf::Text createText(std::string textMessage);
 
     public :
         DummyState();
 
-        void handleInput( Game &game, sf::RenderWindow &window ) override;
-        void update( Game &game ) override;
-        void draw( sf::RenderWindow &window ) override;
+        void handleInput(Game &game, sf::RenderWindow &window) override;
+        void update(Game &game) override;
+        void draw(sf::RenderWindow &window) override;
 };
 
 #endif //SIMPLEGAMEENGINE_DUMMYSTATE_HPP
