@@ -3,9 +3,9 @@
 
 enum class StateOperation {
         RUNNING,
-        ADD_NEW,
-        REPLACE_EXISTING,
-        CLOSE
+        ADD_NEW_STATE,
+        REPLACE_EXISTING_STATE,
+        CLOSE_STATE
 };
 
 #endif //SIMPLEGAMEENGINE_STATEOPERATION_HPP

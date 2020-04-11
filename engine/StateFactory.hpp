@@ -1,24 +1,25 @@
 #ifndef SIMPLEGAMEENGINE_STATEFACTORY_HPP
 #define SIMPLEGAMEENGINE_STATEFACTORY_HPP
 
-#include "GameState.hpp"
-
-#include "../states/DummyState.hpp"
-
 #include <functional>
 #include <iostream>
 #include <map>
 
+#include "../states/AbstractState.hpp"
+#include "../states/StateDummy.hpp"
+
 class StateFactory {
     public:
-        StateFactory();
+        explicit StateFactory(Game &game);
 
-        std::unique_ptr< GameState > createState(State state);
+        std::unique_ptr< AbstractState > createState(State state, Game &game);
 
     private:
-        std::map<State, std::function<std::unique_ptr< GameState >()>> states;
+        Game &game;
 
-        void initialiseStateMap();
+        std::map< State, std::function< std::unique_ptr< AbstractState >()>> states;
+
+        void initialiseStateMap(Game &game);
 };
 
 #endif //SIMPLEGAMEENGINE_STATEFACTORY_HPP

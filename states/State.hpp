@@ -2,8 +2,8 @@
 #define SIMPLEGAMEENGINE_STATE_HPP
 
 enum class State {
-        NONE,
-        INITIAL
+        NOT_DEFINED,
+        INITIAL_STATE
 };
 
 #endif //SIMPLEGAMEENGINE_STATE_HPP

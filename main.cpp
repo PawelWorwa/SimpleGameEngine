@@ -2,7 +2,7 @@
 
 int main() {
     Engine engine;
-    engine.initialState(State::INITIAL);
+    engine.addState(State::INITIAL_STATE);
     engine.gameLoop();
 
     return EXIT_SUCCESS;

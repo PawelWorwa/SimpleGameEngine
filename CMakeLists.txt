@@ -10,12 +10,14 @@ add_executable(SimpleGameEngine
         engine/Game.cpp
         engine/Game.hpp
         engine/GameState.hpp
-        engine/StateOperation.hpp
-        engine/State.hpp
-        states/DummyState.cpp
-        states/DummyState.hpp
-        engine/StateFactory.cpp engine/StateFactory.hpp)
-
+        engine/StateFactory.cpp
+        engine/StateFactory.hpp
+        states/AbstractState.hpp
+        states/AbstractState.cpp
+        states/State.hpp
+        states/StateDummy.cpp
+        states/StateDummy.hpp
+        states/StateOperation.hpp)
 
 set(SFML_DIR "${SFML_PATH}")
 

@@ -1,18 +1,25 @@
 #ifndef SIMPLEGAMEENGINE_GAME_HPP
 #define SIMPLEGAMEENGINE_GAME_HPP
 
+#include <SFML/Graphics/RenderWindow.hpp>
+
+#include "GameState.hpp"
+
 class Game {
     public:
-        Game();
+        explicit Game(sf::RenderWindow &window);
 
-        bool isPaused() const;
-        bool isRunning() const;
-        void setRunning(bool running);
-        void setPaused(bool paused);
+        sf::RenderWindow &getWindow() const;
+        bool isExitGame();
+        bool isPaused();
+
+        void pause();
+        void unPause();
+        void exitGame();
 
     private:
-        bool running;
-        bool paused;
+        GameState gameState;
+        sf::RenderWindow &window;
 };
 
 #endif //SIMPLEGAMEENGINE_GAME_HPP

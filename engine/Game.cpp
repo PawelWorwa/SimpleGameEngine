@@ -1,22 +1,30 @@
 #include "Game.hpp"
 
-Game::Game() :
-        running(true),
-        paused(false) {
+Game::Game(sf::RenderWindow &window) :
+        window(window),
+        gameState(GameState::RUNNING) {
 }
 
-bool Game::isRunning() const {
-    return running;
+sf::RenderWindow &Game::getWindow() const {
+    return window;
 }
 
-bool Game::isPaused() const {
-    return paused;
+void Game::pause() {
+    Game::gameState = GameState::PAUSE;
 }
 
-void Game::setRunning(bool running) {
-    Game::running = running;
+void Game::unPause() {
+    Game::gameState = GameState::RUNNING;
 }
 
-void Game::setPaused(bool paused) {
-    Game::paused = paused;
+void Game::exitGame() {
+    Game::gameState = GameState::EXIT_GAME;
+}
+
+bool Game::isExitGame() {
+    return Game::gameState == GameState::EXIT_GAME;
+}
+
+bool Game::isPaused() {
+    return Game::gameState == GameState::PAUSE;
 }

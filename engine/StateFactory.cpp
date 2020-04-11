@@ -1,10 +1,10 @@
 #include "StateFactory.hpp"
 
-StateFactory::StateFactory() {
-    initialiseStateMap();
+StateFactory::StateFactory(Game &game) : game(game) {
+    initialiseStateMap(game);
 }
 
-std::unique_ptr< GameState > StateFactory::createState(State state) {
+std::unique_ptr< AbstractState > StateFactory::createState(State state, Game &game) {
     if (states.find(state) == states.end()) {
         std::cerr << "State not found!" << std::endl;
     }
@@ -12,6 +12,6 @@ std::unique_ptr< GameState > StateFactory::createState(State state) {
     return states.at(state)();
 }
 
-void StateFactory::initialiseStateMap() {
-    states.emplace(State::INITIAL, []() { return std::unique_ptr< GameState >(new DummyState()); });
+void StateFactory::initialiseStateMap(Game &game) {
+    states.emplace(State::INITIAL_STATE, [&game]() { return std::unique_ptr< AbstractState >(new StateDummy(game)); });
 }
